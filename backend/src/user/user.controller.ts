@@ -62,9 +62,9 @@ export class UserController {
   @Get(':id')
   @ApiOperation({ summary: 'Get user by ID' })
   @ApiParam({ name: 'id', description: 'User ID', type: 'number' })
-  async getUserById(@Param('id') id: string) {
+  async getUserById(@Param('id') id: number) {
     try {
-      return await this.userService.findUserById(parseInt(id, 10));
+      return await this.userService.findUserById(id);
     } catch (error) {
       throw new NotFoundException(error.message);
     }

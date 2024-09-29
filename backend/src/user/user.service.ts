@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { DatabaseService } from '../database/database.service';
 
@@ -6,7 +10,6 @@ import { DatabaseService } from '../database/database.service';
 export class UserService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  
   async findAllUsers(page: number, pageSize: number, search: string) {
     try {
       const connection = this.databaseService.getConnection();
@@ -27,7 +30,10 @@ export class UserService {
       params.push(pageSize, offset);
 
       const [rows]: any[] = await connection.query(query, params);
-      const [totalResult]: any[] = await connection.query(countQuery, params.slice(0, -2));
+      const [totalResult]: any[] = await connection.query(
+        countQuery,
+        params.slice(0, -2),
+      );
 
       const totalRows = totalResult[0].total;
       const totalPages = Math.ceil(totalRows / pageSize);
@@ -39,11 +45,13 @@ export class UserService {
     }
   }
 
-  
   async findUserById(id: number) {
     try {
       const connection = this.databaseService.getConnection();
-      const [rows]: any[] = await connection.query(`SELECT * FROM Users WHERE id = ?`, [id]);
+      const [rows]: any[] = await connection.query(
+        `SELECT * FROM Users WHERE id = ?`,
+        [id],
+      );
 
       if (rows.length === 0) {
         throw new NotFoundException(`User with ID ${id} not found`);
@@ -58,18 +66,26 @@ export class UserService {
     }
   }
 
-  
   async createUser(user: any) {
     try {
       const connection = this.databaseService.getConnection();
       const hashedPassword = await bcrypt.hash(user.password, 10);
-      
-      
+
       const query = `
         INSERT INTO Users (name, surname, email, password, phone, age, country, district, role)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
-      const params = [user.name, user.surname, user.email, hashedPassword, user.phone, user.age, user.country, user.district, user.role];
+      const params = [
+        user.name,
+        user.surname,
+        user.email,
+        hashedPassword,
+        user.phone,
+        user.age,
+        user.country,
+        user.district,
+        user.role,
+      ];
 
       const [result]: any = await connection.query(query, params);
       return { id: result.insertId, ...user, password: undefined };
@@ -79,7 +95,6 @@ export class UserService {
     }
   }
 
-  
   async updateUser(id: number, updatedFields: any) {
     try {
       const connection = this.databaseService.getConnection();
@@ -96,7 +111,7 @@ export class UserService {
           params.push(updatedFields[key]);
         }
       }
-      console.log(setClause)
+      console.log(setClause);
       const updateQuery = `UPDATE Users SET ${setClause.join(', ')} WHERE id = ?`;
       params.push(id);
 
@@ -114,7 +129,4 @@ export class UserService {
       throw new InternalServerErrorException('Failed to update user');
     }
   }
-  
 }
-
-
