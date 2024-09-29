@@ -1,0 +1,42 @@
+.container {
+  padding: 30px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: auto;
+}
+
+.title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.space {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-input {
+  width: 300px;
+  border-radius: 8px;
+  border-color: #1890ff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-button {
+  background-color: #1890ff;
+  color: #fff;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(24, 144, 255, 0.3);
+}
+
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+  padding: 10px 0;
+}
